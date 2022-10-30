@@ -58,7 +58,7 @@ def preprocess_data(train_data, valid_data, data_schema):
     train_X = inputs_pipeline.fit_transform(inputs)
     
     # we are not doing any transformation on the targets, but we could have (e.g. standard scaling)
-    train_y = train_data[[pp_params["target_attr_name"]]]
+    train_y = train_data[[pp_params["target_attr_name"]]].values
     print("Processed train X/y data shape", train_X.shape, train_y.shape)
     
     if valid_data is not None: 
