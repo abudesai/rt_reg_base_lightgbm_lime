@@ -27,7 +27,7 @@ class Regressor():
     def build_model(self, **kwargs): 
         model = lgb.LGBMRegressor(
             objective='regression',
-            num_class =1,
+            num_class=1,
             boosting_type = self.boosting_type,
             num_leaves = self.num_leaves,
             learning_rate = self.learning_rate,
