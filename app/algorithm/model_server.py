@@ -1,5 +1,7 @@
 import numpy as np, pandas as pd
+import json
 import os, sys
+import pprint
 from interpret.blackbox import LimeTabular
 
 import algorithm.utils as utils
@@ -87,17 +89,25 @@ class ModelServer:
             X=pred_X, y=None, name=f"{regressor.MODEL_NAME} local explanations"
         )
 
-        # create the dataframe of local explanations to return
-        ids = data2[self.id_field_name]
-        dfs = []
+        ids = list(data2[self.id_field_name])
+        explanations = []
         for i, sample_exp in enumerate(lime_local._internal_obj["specific"]):
-            df = pd.DataFrame()
-            df["feature"] = sample_exp["names"] + [sample_exp["extra"]["names"][0]]
-            df["score"] = sample_exp["scores"] + [sample_exp["extra"]["scores"][0]]
-            df.sort_values(by=["score"], inplace=True, ascending=False)
-            df.insert(0, self.id_field_name, ids[i])
-            dfs.append(df)
+            sample_expl_dict = {}
+            # intercept
+            sample_expl_dict["baseline"] = np.round(sample_exp["extra"]["scores"][0], 5)
 
-        local_exp_df = pd.concat(dfs, ignore_index=True, axis=0)
-        local_exp_df["score"] = local_exp_df["score"].round(5)
-        return local_exp_df
+            sample_expl_dict["feature_scores"] = {
+                f: np.round(s, 5)
+                for f, s in zip(sample_exp["names"], sample_exp["scores"])
+            }
+
+            explanations.append(
+                {
+                    self.id_field_name: ids[i],
+                    "prediction": np.round(sample_exp["perf"]["predicted"], 5),
+                    "explanations": sample_expl_dict,
+                }
+            )
+        explanations = {"predictions": explanations}
+        explanations = json.dumps(explanations, cls=utils.NpEncoder, indent=2)
+        return explanations
