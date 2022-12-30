@@ -15,7 +15,7 @@ LightGBM Regressor using Scikit-Learn and LIME for Regression
 - gunicorn
 - docker
 
-This is an explainable version of LightGBM regressor, with Shapley values for model interpretability.
+This is an explainable version of LightGBM regressor, with LIME for model interpretability.
 
 Model explainability is provided using LIME. Local explanations are provided here. Explanations at each instance can be understood using LIME. These explanations can be viewed by means of various plots.
 
