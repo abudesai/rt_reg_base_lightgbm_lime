@@ -151,7 +151,7 @@ def load_and_test_algo():
         os.path.join(testing_outputs_path, "test_predictions.csv"), index=False
     )
     # local explanations
-    if hasattr(predictor, "has_local_explanations2"):
+    if hasattr(predictor, "has_local_explanations"):
         # will only return explanations for max 5 rows - will select the top 5 if given more rows
         local_explanations = predictor.explain_local(test_data)
     else:
@@ -287,7 +287,7 @@ if __name__ == "__main__":
         "medical_costs",
         "white_wine",
     ]
-    datasets = ["diamond"]
+    datasets = ["white_wine"]
 
     for run_hpt in run_hpt_list:
         all_results = []

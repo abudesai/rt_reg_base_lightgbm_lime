@@ -6,7 +6,6 @@ import traceback
 import warnings
 
 warnings.filterwarnings("ignore")
-
 os.environ["MPLCONFIGDIR"] = os.getcwd() + "/configs/"
 
 import algorithm.utils as utils
