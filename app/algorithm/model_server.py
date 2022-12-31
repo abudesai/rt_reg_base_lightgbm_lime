@@ -49,12 +49,8 @@ class ModelServer:
         pred_X = preprocessor.transform(data)
         # make predictions
         preds = model.predict(pred_X)
-        # get the names for the id and prediction fields
-        id_field_name = self.data_schema["inputDatasets"]["regressionBaseMainInput"][
-            "idField"
-        ]
         # return te prediction df with the id and prediction fields
-        preds_df = data[[id_field_name]].copy()
+        preds_df = data[[self.id_field_name]].copy()
         preds_df["prediction"] = np.round(preds, 4)
         return preds_df
 
